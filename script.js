@@ -28,30 +28,5 @@ const grid=document.getElementById('productGrid');
 function card(p,i){const [file,name,type]=p;const label=type==='gift'?'Gift Set':type==='keychain'?'Keychain':'Pen';const msg=`Hello Arshad Craft, I want to know the current price and availability of ${name}. Product photo: ${file}`;return `<article class="card" data-type="${type}"><div class="photo"><img src="products/${file}" alt="${name}" loading="lazy"></div><div class="card-body"><span class="tag">${label}</span><h3>${name}</h3><p>Current price & availability on WhatsApp.</p><a class="order" href="https://wa.me/916901914922?text=${encodeURIComponent(msg)}" target="_blank">Ask / Order on WhatsApp ↗</a></div></article>`}
 function render(filter='all'){grid.innerHTML=photos.filter(p=>filter==='all'||p[2]===filter).map(card).join('')}
 document.querySelectorAll('#filters button').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('#filters button').forEach(x=>x.classList.remove('active'));btn.classList.add('active');render(btn.dataset.filter)}));
-document.getElementById('year').textContent=new Date().getFullYear();
+render();document.getElementById('year').textContent=new Date().getFullYear();
 const float=document.createElement('a');float.className='wa-float';float.href='https://wa.me/916901914922?text=Hello%20Arshad%20Craft%2C%20I%20need%20help%20with%20an%20order.';float.target='_blank';float.textContent='WhatsApp ↗';document.body.appendChild(float);
-
-
-// Smooth reveal animations — lightweight and mobile friendly.
-const revealTargets = document.querySelectorAll('.section, .strip, .founder-card, .steps > div, .cta');
-revealTargets.forEach(el => el.classList.add('reveal'));
-const observer = new IntersectionObserver((entries, obs) => {
-  entries.forEach(entry => {
-    if(entry.isIntersecting){
-      entry.target.classList.add('visible');
-      obs.unobserve(entry.target);
-    }
-  });
-},{threshold:0.12});
-revealTargets.forEach(el => observer.observe(el));
-
-// Re-apply reveal to product cards whenever filters change.
-const originalRender = render;
-render = function(filter='all'){
-  originalRender(filter);
-  document.querySelectorAll('.card').forEach(cardEl => {
-    cardEl.classList.add('reveal');
-    requestAnimationFrame(() => cardEl.classList.add('visible'));
-  });
-};
-render();
